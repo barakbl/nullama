@@ -1,0 +1,30 @@
+CHANGELOG
+=========
+
+v0.1.0 — 2026-03-12
+--------------------
+
+Initial release.
+
+Commands:
+  - /to_nu: Generate Nushell def blocks from a TOML spec file
+  - /nu_create_toml_from_posix_command: Auto-generate TOML specs from any CLI tool
+
+Features:
+  - TOML-driven spec format for describing CLI tool subcommands, flags, and output parsing
+  - Multiple parsing strategies: tabular (detect columns), simple format patterns, regex, CSV/delimiter, line-oriented, and raw passthrough
+  - Header sanitization — multi-word headers like "CONTAINER ID" become "container_id"
+  - Stderr capture via `complete` for tools that write output to stderr
+  - Streaming mode support — follow/watch flags stream raw, non-follow parses into structured tables
+  - String flags use `= ""` defaults to avoid Nushell missing_flag_param parser errors
+  - Simple `parse "{col}"` format preferred over regex to avoid Nushell angle-bracket parser issues
+  - `detect columns --guess` for automatic column width detection
+  - Column type coercion support
+  - Row reversal support
+  - Interactive TOML generator asks user for full vs specific subcommands and flag scope
+
+Examples:
+  - examples/docker/docker.toml: Docker wrapper spec (ps, images, logs)
+  - examples/docker/docker.nu: Generated Nushell commands for Docker
+  - examples/openfang/openfang.toml: OpenFang wrapper spec (33 subcommands)
+  - examples/openfang/openfang.nu: Generated Nushell commands for OpenFang
