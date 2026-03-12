@@ -1,6 +1,37 @@
 CHANGELOG
 =========
 
+v0.3.0 — 2026-03-12
+--------------------
+
+Bug fixes:
+  - Fixed "Input type not supported" errors caused by run-external returning nothing
+    - All parsed commands now use `do { ^cmd } | complete` for reliable output capture
+    - Added null-safe field access: `($result.stdout? | default "") + ($result.stderr? | default "")`
+    - Added empty-output guard: `if ($raw | str trim | is-empty) { return [] }`
+  - Fixed "can't convert nothing to boolean" when a positional arg name collides with a flag name
+    - Renamed `formula?` positional to `name?` in brew list/info/deps to avoid shadowing `--formula` flag
+  - Fixed base command `--help (-h)` showing Nushell's built-in help instead of tool help
+    - Nushell reserves `--help`; changed to `--info (-i)` for structured help output
+
+Improvements:
+  - Base command now returns help as a single structured table (columns: section, command, description)
+    instead of printing multiple tables — output is filterable: `nubrew -i | where section == "Commands"`
+  - Base command accepts `...rest` for pass-through to unwrapped subcommands (e.g. `nubrew doctor`)
+  - Updated /to_nu and /nu_create_toml_from_posix_command templates with all fixes
+  - README updated with structured help examples, expanded compatibility notes
+
+v0.2.0 — 2026-03-12
+--------------------
+
+New examples:
+  - examples/brew/brew.toml + brew.nu: Homebrew wrapper (list, info, search, outdated, deps, services)
+  - examples/pip/pip.toml + pip.nu: pip3 wrapper (list, show, freeze, install, check)
+
+Improvements:
+  - README redesigned with Nushell project intro, disclaimer, icons, usage examples, and examples table
+  - Expanded Docker example: added stats, top, events, port, version, info, history, inspect, diff subcommands
+
 v0.1.0 — 2026-03-12
 --------------------
 

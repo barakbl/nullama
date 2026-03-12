@@ -1,0 +1,80 @@
+cli_command = "brew"
+cli_new_command = "nubrew"
+cli_version = "5.0.16"
+
+[[command]]
+args = "list"
+flags = [
+  { long = "formula", type = "bool", description = "List only formulae" },
+  { long = "cask", type = "bool", description = "List only casks" },
+  { long = "full-name", type = "bool", description = "Print formulae with fully-qualified names" },
+  { long = "versions", type = "bool", description = "Show the version number for installed formulae" },
+  { long = "pinned", type = "bool", description = "List only pinned formulae" },
+]
+positional_args = [
+  { name = "name", type = "string", optional = true, description = "Formula or cask name" },
+]
+parse_helper = "line-oriented text, one package per line"
+
+[[command]]
+args = "info"
+flags = [
+  { long = "json", type = "bool", description = "Print a JSON representation" },
+  { long = "installed", type = "bool", description = "Print JSON of formulae that are currently installed" },
+  { long = "formula", type = "bool", description = "Treat all named arguments as formulae" },
+  { long = "cask", type = "bool", description = "Treat all named arguments as casks" },
+  { long = "sizes", type = "bool", description = "Show the size of installed formulae and casks" },
+  { long = "verbose", short = "v", type = "bool", description = "Show more verbose analytics data" },
+]
+positional_args = [
+  { name = "name", type = "string", optional = true, description = "Formula or cask name" },
+]
+parse_helper = "key-value freeform text, multi-line per package"
+
+[[command]]
+args = "search"
+flags = [
+  { long = "formula", type = "bool", description = "Search for formulae" },
+  { long = "cask", type = "bool", description = "Search for casks" },
+  { long = "desc", type = "bool", description = "Search descriptions" },
+]
+positional_args = [
+  { name = "text", type = "string", optional = false, description = "Search text or /regex/" },
+]
+parse_helper = "line-oriented text, one result per line"
+
+[[command]]
+args = "outdated"
+flags = [
+  { long = "formula", type = "bool", description = "List only outdated formulae" },
+  { long = "cask", type = "bool", description = "List only outdated casks" },
+  { long = "json", type = "bool", description = "Print output in JSON format" },
+  { long = "greedy", short = "g", type = "bool", description = "Include casks with auto_updates or version :latest" },
+  { long = "verbose", short = "v", type = "bool", description = "Include detailed version information" },
+  { long = "quiet", short = "q", type = "bool", description = "List only the names of outdated kegs" },
+]
+parse_helper = "line-oriented text, one outdated package per line with version info"
+
+[[command]]
+args = "deps"
+flags = [
+  { long = "topological", short = "n", type = "bool", description = "Sort dependencies in topological order" },
+  { long = "direct", type = "bool", description = "Show only direct declared dependencies" },
+  { long = "tree", type = "bool", description = "Show dependencies as a tree" },
+  { long = "installed", type = "bool", description = "List dependencies for currently installed formulae" },
+  { long = "missing", type = "bool", description = "Show only missing dependencies" },
+  { long = "annotate", type = "bool", description = "Mark build, test, optional, or recommended dependencies" },
+  { long = "formula", type = "bool", description = "Treat all named arguments as formulae" },
+  { long = "for-each", type = "bool", description = "List dependencies for each provided formula, one per line" },
+]
+positional_args = [
+  { name = "name", type = "string", optional = true, description = "Formula or cask name" },
+]
+parse_helper = "line-oriented text, one dependency per line"
+
+[[command]]
+args = "services list"
+flags = [
+  { long = "json", type = "bool", description = "Output as JSON" },
+]
+parse_helper = "tabular aligned columns, header row present"

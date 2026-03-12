@@ -1,0 +1,107 @@
+cli_command = "git"
+cli_new_command = "nugit"
+cli_version = "2.x"
+
+[[command]]
+args = "status"
+flags = [
+  { long = "short", short = "s", type = "bool", description = "Give output in short format" },
+  { long = "branch", short = "b", type = "bool", description = "Show branch and tracking info" },
+  { long = "porcelain", type = "bool", description = "Give output in porcelain format" },
+]
+parse_helper = "line-oriented text, each line is a file status entry"
+
+[[command]]
+args = "log"
+flags = [
+  { long = "oneline", type = "bool", description = "Shorthand for --pretty=oneline --abbrev-commit" },
+  { long = "graph", type = "bool", description = "Draw text graphical representation of history" },
+  { long = "all", type = "bool", description = "Show all refs" },
+  { long = "author", type = "string", description = "Filter commits by author" },
+  { long = "since", type = "string", description = "Show commits more recent than a specific date" },
+  { long = "until", type = "string", description = "Show commits older than a specific date" },
+  { long = "grep", type = "string", description = "Filter commits by message pattern" },
+  { long = "max-count", short = "n", type = "string", description = "Limit number of commits to show" },
+]
+positional_args = [
+  { name = "revision_range", type = "string", optional = true, description = "Revision range (e.g. HEAD~5..HEAD)" },
+]
+parse_format = "{hash}|{date}|{author}|{subject}"
+columns = ["hash", "date", "author", "subject"]
+parse_helper = "use --format flag with pipe delimiter"
+
+[[command]]
+args = "log --format=%H|%as|%an|%s"
+flags = [
+  { long = "all", type = "bool", description = "Show all refs" },
+  { long = "author", type = "string", description = "Filter commits by author" },
+  { long = "since", type = "string", description = "Show commits more recent than a specific date" },
+  { long = "until", type = "string", description = "Show commits older than a specific date" },
+  { long = "grep", type = "string", description = "Filter commits by message pattern" },
+  { long = "max-count", short = "n", type = "string", description = "Limit number of commits to show" },
+]
+positional_args = [
+  { name = "revision_range", type = "string", optional = true, description = "Revision range (e.g. HEAD~5..HEAD)" },
+]
+columns = ["hash", "date", "author", "subject"]
+delimiter = "|"
+
+[[command]]
+args = "branch"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "List both remote-tracking and local branches" },
+  { long = "remotes", short = "r", type = "bool", description = "List only remote-tracking branches" },
+  { long = "verbose", short = "v", type = "bool", description = "Show sha1 and commit subject line for each head" },
+  { long = "merged", type = "string", description = "Only list branches merged into the named commit" },
+  { long = "no-merged", type = "string", description = "Only list branches not merged into the named commit" },
+  { long = "delete", short = "d", type = "bool", description = "Delete a branch" },
+]
+positional_args = [
+  { name = "name", type = "string", optional = true, description = "Branch name" },
+]
+parse_helper = "line-oriented text, one branch per line"
+
+[[command]]
+args = "diff"
+flags = [
+  { long = "stat", type = "bool", description = "Show diffstat instead of patch" },
+  { long = "staged", type = "bool", description = "Compare staged changes to HEAD" },
+  { long = "name-only", type = "bool", description = "Show only names of changed files" },
+  { long = "name-status", type = "bool", description = "Show names and status of changed files" },
+]
+positional_args = [
+  { name = "commit", type = "string", optional = true, description = "Commit, branch, or range to diff against" },
+]
+parse_helper = "line-oriented text, each line is a diff entry"
+
+[[command]]
+args = "remote"
+flags = [
+  { long = "verbose", short = "v", type = "bool", description = "Show remote URL after the name" },
+]
+parse_helper = "line-oriented text, one remote per line"
+
+[[command]]
+args = "stash list"
+parse_format = "{ref}: {branch}: {message}"
+
+[[command]]
+args = "tag"
+flags = [
+  { long = "list", short = "l", type = "bool", description = "List tags" },
+  { long = "sort", type = "string", description = "Sort by a specific key" },
+  { long = "annotate", short = "a", type = "bool", description = "Make an unsigned annotated tag object" },
+  { long = "message", short = "m", type = "string", description = "Tag message" },
+  { long = "delete", short = "d", type = "bool", description = "Delete existing tags" },
+]
+positional_args = [
+  { name = "name", type = "string", optional = true, description = "Tag name" },
+]
+parse_helper = "line-oriented text, one tag per line"
+
+[[command]]
+args = "show --stat"
+positional_args = [
+  { name = "object", type = "string", optional = true, description = "Object to show (commit, tag, tree, blob)" },
+]
+parse_helper = "line-oriented text, commit info followed by stat lines"

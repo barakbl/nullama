@@ -4,6 +4,12 @@ You are a Nushell command generator. Your job is to read a TOML spec file and pr
 
 Read the TOML file at: $ARGUMENTS
 
+**If the TOML file does not exist**, tell the user and offer to create it:
+
+> The file `$ARGUMENTS` was not found. Would you like me to create it using `/nu_create_toml_from_posix_command`?
+
+If the user agrees, run the `/nu_create_toml_from_posix_command` skill to generate the TOML first, then continue with the steps below.
+
 ## TOML Schema
 
 The file follows this schema:
@@ -34,6 +40,45 @@ follow_flag = ""                 # Name of a bool flag that enables streaming �
 
 ## Generation Rules
 
+### 0. Base Command (ALWAYS generate first)
+
+Always generate a base `def cli_new_command` that:
+- With `...rest` args: passes them through to the bare `cli_command` so unwrapped subcommands still work (e.g. `nutool doctor`)
+- With `--info (-i)`: parses `cli_command --help` output into a single structured Nushell table with columns: `section`, `command`, `description`. This makes the help output filterable and pipeable (e.g. `nutool -i | where section == "Commands"`)
+- **CRITICAL**: Do NOT use `--help (-h)` — Nushell reserves that flag and intercepts it to show its own built-in help instead of running your code. Use `--info (-i)` instead.
+
+```nushell
+def nutool [
+    --info (-i)             # Show cli_command help as structured table
+    ...rest: string         # Pass-through args to cli_command
+] {
+    if $info {
+        let result = do { ^cli_command --help } | complete
+        let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
+        if ($raw | str trim | is-empty) { return [] }
+        mut rows = []
+        mut current_section = ""
+        for line in ($raw | lines) {
+            if ($line | str trim | is-empty) {
+                # skip blank lines
+            } else if ($line =~ '^\S') {
+                $current_section = ($line | str trim | str replace ':$' '')
+            } else if ($line =~ '^\s+\S') {
+                let parts = ($line | str trim | split row -r '\s{2,}')
+                let item = ($parts | first)
+                let desc = if ($parts | length) > 1 { $parts | skip 1 | str join ' ' } else { '' }
+                $rows = ($rows | append {section: $current_section, command: $item, description: $desc})
+            }
+        }
+        $rows
+    } else {
+        run-external cli_command ...$rest
+    }
+}
+```
+
+Then generate the subcommand `def` blocks below.
+
 For each `[[command]]` entry, generate a Nushell `def` block following these rules:
 
 ### 1. Command Name
@@ -46,10 +91,13 @@ For each `[[command]]` entry, generate a Nushell `def` block following these rul
 - **Flags without short**: `--flagname` or `--flagname: string = ""`
 - **Required positional args**: `name: type`
 - **Optional positional args**: `name?: type`
+- **CRITICAL — Name collisions**: If a positional arg has the same name as a flag (e.g. `--formula` flag and `formula?` positional), Nushell will shadow the flag with the positional. The positional will be `null` when not provided, and `if $formula` will fail with `can't convert nothing to boolean`. **Always rename the positional arg** to avoid collisions (e.g. rename `formula?` to `name?`)
 - Add descriptions using `# description` comments in the signature
 
 ### 3. Command Body
-Build an argument list and call the external command:
+Build an argument list and call the external command.
+
+**CRITICAL**: `run-external` can return `nothing` (e.g. when a command writes to stderr, or produces empty stdout). Piping `nothing` into `detect columns`, `parse`, `lines`, etc. causes `Input type not supported` errors. Therefore, **whenever the output will be parsed** (i.e. any parsing pipeline is applied), ALWAYS use `complete` to capture the output, then use `($result.stdout? | default "")` and `($result.stderr? | default "")` to safely handle null fields — in Nushell, `null + string` evaluates to `null`, so both fields MUST be defaulted:
 
 ```nushell
 def "nutool sub" [
@@ -61,10 +109,15 @@ def "nutool sub" [
     if $all { $args = ($args | append "--all") }
     if ($filter | is-not-empty) { $args = ($args | append ["--filter" $filter]) }
     $args = ($args | append $target)
-    run-external cli_command ...$args
+    let result = run-external cli_command ...$args | complete
+    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
+    if ($raw | str trim | is-empty) { return [] }
+    $raw
     | <parsing pipeline>
 }
 ```
+
+Only when `parse_helper` says "streaming text, do not parse" (no parsing pipeline) should you pipe `run-external` directly without `complete`.
 
 ### 4. Parsing Pipeline — Priority Order
 
@@ -76,7 +129,7 @@ Choose the parsing approach in this priority:
 3. **`columns` are set (no delimiter)**: Use `| detect columns` then rename to match specified columns
 4. **`parse_helper` suggests tabular output**: Use `| detect columns --guess` with header sanitization (see below)
 5. **`parse_helper` suggests line-oriented output** (e.g. "line-oriented text", logs): Use `| lines | enumerate | flatten | rename index line` to produce a table with numbered lines
-6. **`parse_helper` suggests non-tabular output** (e.g. "streaming text", "do not parse"): Do NOT add any parsing pipeline — just return the raw output from `run-external`
+6. **`parse_helper` suggests non-tabular output** (e.g. "streaming text", "do not parse"): Do NOT add any parsing pipeline — just return the raw output from `run-external` directly (no `complete`)
 
 ### 5. Header Sanitization (CRITICAL for `detect columns`)
 
@@ -99,12 +152,7 @@ If `column_types` is specified, add conversion after parsing:
 
 ### 7. Stderr Capture
 
-If `stderr = true`, the CLI tool writes output to stderr. Instead of piping `run-external` directly, use `complete` to capture all output and concatenate both streams:
-
-```nushell
-let result = run-external cli_command ...$args | complete
-$result.stdout + $result.stderr | <parsing pipeline>
-```
+Since all parsed commands already use `complete` (see rule 3), the `stderr = true` flag is mainly a documentation hint. The `($result.stdout? | default "") + ($result.stderr? | default "")` concatenation in the standard pattern already captures both streams. No additional changes are needed for stderr commands — the default `complete` pattern handles it.
 
 ### 8. Follow Flag (Streaming Mode)
 
@@ -115,7 +163,9 @@ if $follow {
     run-external cli_command ...$args
 } else {
     let result = run-external cli_command ...$args | complete
-    $result.stdout + $result.stderr | <parsing pipeline>
+    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
+    if ($raw | str trim | is-empty) { return [] }
+    $raw | <parsing pipeline>
 }
 ```
 
@@ -137,3 +187,4 @@ Output ONLY the generated `def` blocks, one after another, with a blank line bet
 - For string flags, check with `if ($flagname | is-not-empty) { ... }`
 - When `follow_flag` is set, only parse in the non-follow branch — the follow branch must stream raw output
 - Keep generated code minimal and clean — no unnecessary comments in the body
+- **CRITICAL**: Nushell uses `mut` for mutable variables, NOT `let mut`. `let mut` is a syntax error. Always use `mut x = ...` (never `let mut x = ...`)

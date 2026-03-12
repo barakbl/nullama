@@ -5,33 +5,127 @@ cli_new_command = "nudocker"
 args = "ps"
 flags = [
   { long = "all", short = "a", type = "bool", description = "Show all containers" },
-  { long = "filter", short = "f", type = "string", description = "Filter condition" },
-  { long = "format", type = "string", description = "Pretty-print using a Go template" },
+  { long = "filter", short = "f", type = "string", description = "Filter output based on conditions" },
+  { long = "format", type = "string", description = "Format output using a Go template" },
+  { long = "last", short = "n", type = "string", description = "Show n last created containers" },
+  { long = "latest", short = "l", type = "bool", description = "Show the latest created container" },
+  { long = "no-trunc", type = "bool", description = "Don't truncate output" },
+  { long = "quiet", short = "q", type = "bool", description = "Only display container IDs" },
+  { long = "size", short = "s", type = "bool", description = "Display total file sizes" },
 ]
 parse_helper = "tabular aligned columns, header row present, headers have spaces (e.g. CONTAINER ID)"
-reverse = false
 
 [[command]]
 args = "images"
 flags = [
-  { long = "all", short = "a", type = "bool", description = "Show all images" },
-  { long = "filter", short = "f", type = "string", description = "Filter condition" },
+  { long = "all", short = "a", type = "bool", description = "Show all images including intermediates" },
+  { long = "digests", type = "bool", description = "Show digests" },
+  { long = "filter", short = "f", type = "string", description = "Filter output based on conditions" },
+  { long = "format", type = "string", description = "Format output using a Go template" },
+  { long = "no-trunc", type = "bool", description = "Don't truncate output" },
+  { long = "quiet", short = "q", type = "bool", description = "Only show image IDs" },
+]
+positional_args = [
+  { name = "repository", type = "string", optional = true, description = "Repository name with optional tag" },
 ]
 parse_helper = "tabular aligned columns, header row present, headers have spaces (e.g. IMAGE ID)"
-reverse = false
 
 [[command]]
 args = "logs"
 flags = [
+  { long = "details", type = "bool", description = "Show extra details provided to logs" },
   { long = "follow", short = "f", type = "bool", description = "Follow log output" },
+  { long = "since", type = "string", description = "Show logs since timestamp or relative (e.g. 42m)" },
   { long = "tail", short = "n", type = "string", description = "Number of lines to show from end" },
   { long = "timestamps", short = "t", type = "bool", description = "Show timestamps" },
-  { long = "since", type = "string", description = "Show logs since timestamp or relative" },
+  { long = "until", type = "string", description = "Show logs before a timestamp or relative" },
 ]
 positional_args = [
   { name = "container", type = "string", optional = false, description = "Container name or ID" },
 ]
-parse_format = "{level}:{message}"
-stderr = true                    # Output comes from stderr, use `complete` to capture
-follow_flag = "follow"           # When this bool flag is set, stream raw output instead of parsing
-reverse = false
+stderr = true
+follow_flag = "follow"
+parse_helper = "line-oriented text, each line is a log entry"
+
+[[command]]
+args = "stats --no-stream"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "Show all containers, not just running" },
+  { long = "format", type = "string", description = "Format output using a Go template" },
+  { long = "no-trunc", type = "bool", description = "Do not truncate output" },
+]
+positional_args = [
+  { name = "container", type = "string", optional = true, description = "Container name or ID" },
+]
+parse_helper = "tabular aligned columns, header row present, headers have spaces (e.g. CONTAINER ID, MEM USAGE)"
+
+[[command]]
+args = "top"
+positional_args = [
+  { name = "container", type = "string", optional = false, description = "Container name or ID" },
+]
+parse_helper = "tabular aligned columns, header row present"
+
+[[command]]
+args = "events"
+flags = [
+  { long = "filter", short = "f", type = "string", description = "Filter output based on conditions" },
+  { long = "format", type = "string", description = "Format output using a Go template" },
+  { long = "since", type = "string", description = "Show events created since timestamp" },
+  { long = "until", type = "string", description = "Stream events until this timestamp" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "port"
+positional_args = [
+  { name = "container", type = "string", optional = false, description = "Container name or ID" },
+  { name = "private_port", type = "string", optional = true, description = "Private port with optional proto (e.g. 80/tcp)" },
+]
+parse_format = "{private_port} -> {public_addr}"
+
+[[command]]
+args = "version"
+flags = [
+  { long = "format", short = "f", type = "string", description = "Format output using a Go template" },
+]
+parse_helper = "key-value pairs, colon-separated"
+
+[[command]]
+args = "info"
+flags = [
+  { long = "format", short = "f", type = "string", description = "Format output using a Go template" },
+]
+parse_helper = "key-value pairs, colon-separated, nested sections"
+
+[[command]]
+args = "history"
+flags = [
+  { long = "format", type = "string", description = "Format output using a Go template" },
+  { long = "human", short = "H", type = "bool", description = "Print sizes and dates in human readable format" },
+  { long = "no-trunc", type = "bool", description = "Don't truncate output" },
+  { long = "quiet", short = "q", type = "bool", description = "Only show image IDs" },
+]
+positional_args = [
+  { name = "image", type = "string", optional = false, description = "Image name or ID" },
+]
+parse_helper = "tabular aligned columns, header row present, headers have spaces (e.g. CREATED BY)"
+
+[[command]]
+args = "inspect"
+flags = [
+  { long = "format", short = "f", type = "string", description = "Format output using a Go template" },
+  { long = "size", short = "s", type = "bool", description = "Display total file sizes for containers" },
+  { long = "type", type = "string", description = "Only inspect objects of the given type" },
+]
+positional_args = [
+  { name = "target", type = "string", optional = false, description = "Name or ID of the object to inspect" },
+]
+parse_helper = "JSON output, parse with from json"
+
+[[command]]
+args = "diff"
+positional_args = [
+  { name = "container", type = "string", optional = false, description = "Container name or ID" },
+]
+parse_format = "{change_type} {path}"

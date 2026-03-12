@@ -8,12 +8,55 @@ The CLI command to wrap: $ARGUMENTS
 
 ### 1. Inspect the command
 
+Run `$ARGUMENTS --version` (or `$ARGUMENTS -V`, or `$ARGUMENTS version`) to capture the version string. This will be stored in the TOML header.
+
 Run `$ARGUMENTS --help` (or `$ARGUMENTS -h`, or `man $ARGUMENTS`) to discover available subcommands, flags, and output format.
+
+Parse the help output into sections. A section starts with a header line — typically a capitalized word or phrase followed by a colon (e.g. `Commands:`, `Options:`), or a standalone header (e.g. `Commands`, `Examples`, `Quick start`, `More`). The indented lines below each header are that section's items.
+
+Display each section as a **separate table**, formatted according to the section type:
+
+**Usage section** — display as a single-row table:
+
+| usage |
+|-------|
+| `docker ps [OPTIONS]` |
+
+**Commands section** — display with command name and description columns:
+
+| command | description |
+|---------|-------------|
+| run | Create and run a new container from an image |
+| exec | Execute a command in a running container |
+| ps | List containers |
+
+**Options/Flags section** — display with short, long, type, and description columns:
+
+| short | long | type | description |
+|-------|------|------|-------------|
+| -a | --all | bool | Show all containers |
+| -f | --filter | string | Filter output based on conditions |
+| | --format | string | Format output using a Go template |
+| -n | --last | int | Show n last created containers |
+
+**Other sections** (Examples, Aliases, etc.) — display as a simple list:
+
+| items |
+|-------|
+| docker container ls, docker container list, docker ps |
+
+This gives the user a structured overview of what the CLI offers before choosing which subcommands to wrap.
+
+When **Step 3** inspects individual subcommand help (`$ARGUMENTS <subcommand> --help`), display the same style of per-section tables for each subcommand so the user can see its flags and positional args clearly.
 
 ### 2. Ask the user: full or specific?
 
 Before generating anything, ask the user:
 
+> Here is the structure of `$ARGUMENTS --help`:
+>
+> *(display the section table from Step 1)*
+>
 > I found the following subcommands for `$ARGUMENTS`:
 > *(list the main subcommands that produce parseable output)*
 >
@@ -32,6 +75,7 @@ For each selected subcommand, run `$ARGUMENTS <subcommand> --help` to discover i
 ```toml
 cli_command = "tool"            # The original CLI tool name
 cli_new_command = "nutool"      # Nu command prefix — use "nu" + tool name (e.g. "nudocker", "nukubectl")
+cli_version = "1.2.3"          # Version of the CLI tool at generation time
 
 [[command]]
 args = "subcommand"             # Subcommand + any fixed args
@@ -72,6 +116,7 @@ column_types = {}               # type coercion per column
 - **stderr**: Set to `true` for commands known to write to stderr (e.g. `docker logs`, many logging commands)
 - **follow_flag**: Set when a command has a "follow" or "watch" flag that makes it stream indefinitely
 - **positional_args**: Include when the subcommand requires a target (container name, pod name, file path, etc.)
+- **CRITICAL — Name collisions**: A positional arg MUST NOT have the same name as any flag. In Nushell, the positional shadows the flag variable, causing `can't convert nothing to boolean` errors. If a flag is named `--formula` and the positional is also `formula`, rename the positional to something else like `name` or `target`
 
 ### 4. Write the file
 

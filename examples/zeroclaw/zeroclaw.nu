@@ -1,9 +1,9 @@
-def nufang [
-    --info (-i)             # Show openfang help as structured table
-    ...rest: string         # Pass-through args to openfang
+def nuzero [
+    --info (-i)             # Show zeroclaw help as structured table
+    ...rest: string         # Pass-through args to zeroclaw
 ] {
     if $info {
-        let result = do { ^openfang --help } | complete
+        let result = do { ^zeroclaw --help } | complete
         let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
         if ($raw | str trim | is-empty) { return [] }
         mut rows = []
@@ -21,100 +21,96 @@ def nufang [
         }
         $rows
     } else {
-        run-external openfang ...$rest
+        run-external zeroclaw ...$rest
     }
 }
 
-def "nufang status" [] {
+def "nuzero status" [] {
     mut args = ["status"]
-    let result = run-external openfang ...$args | complete
-    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
-    if ($raw | str trim | is-empty) { return [] }
-    $raw
-    | lines | each {|line| $line | parse "{key}: {value}" } | flatten | update key { str trim } | update value { str trim }
-}
-
-def "nufang agent list" [] {
-    mut args = ["agent", "list"]
-    let result = run-external openfang ...$args | complete
+    let result = run-external zeroclaw ...$args | complete
     let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
     if ($raw | str trim | is-empty) { return [] }
     $raw
     | lines | enumerate | flatten | rename index line
 }
 
-def "nufang skill list" [] {
-    mut args = ["skill", "list"]
-    let result = run-external openfang ...$args | complete
+def "nuzero providers" [] {
+    mut args = ["providers"]
+    let result = run-external zeroclaw ...$args | complete
     let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
     if ($raw | str trim | is-empty) { return [] }
     $raw
-    | lines | enumerate | flatten | rename index line
+    | detect columns --guess | rename -b {|it| $it | str downcase | str replace -a ' ' '_'}
 }
 
-def "nufang skill search" [
-    query: string  # Search query string
+def "nuzero providers-quota" [] {
+    mut args = ["providers-quota"]
+    let result = run-external zeroclaw ...$args | complete
+    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
+    if ($raw | str trim | is-empty) { return [] }
+    $raw
+    | detect columns --guess | rename -b {|it| $it | str downcase | str replace -a ' ' '_'}
+}
+
+def "nuzero models list" [
+    --provider: string = ""  # Provider name
 ] {
-    mut args = ["skill", "search", $query]
-    let result = run-external openfang ...$args | complete
-    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
-    if ($raw | str trim | is-empty) { return [] }
-    $raw
-    | lines | enumerate | flatten | rename index line
-}
-
-def "nufang channel list" [] {
-    mut args = ["channel", "list"]
-    let result = run-external openfang ...$args | complete
+    mut args = ["models", "list"]
+    if ($provider | is-not-empty) { $args = ($args | append ["--provider", $provider]) }
+    let result = run-external zeroclaw ...$args | complete
     let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
     if ($raw | str trim | is-empty) { return [] }
     $raw
     | detect columns --guess | rename -b {|it| $it | str downcase | str replace -a ' ' '_'}
 }
 
-def "nufang models" [] {
-    mut args = ["models"]
-    let result = run-external openfang ...$args | complete
-    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
-    if ($raw | str trim | is-empty) { return [] }
-    $raw
-    | detect columns --guess | rename -b {|it| $it | str downcase | str replace -a ' ' '_'}
-}
-
-def "nufang sessions" [] {
-    mut args = ["sessions"]
-    let result = run-external openfang ...$args | complete
-    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
-    if ($raw | str trim | is-empty) { return [] }
-    $raw
-    | detect columns --guess | rename -b {|it| $it | str downcase | str replace -a ' ' '_'}
-}
-
-def "nufang logs" [] {
-    run-external openfang "logs"
-}
-
-def "nufang health" [] {
-    mut args = ["health"]
-    let result = run-external openfang ...$args | complete
+def "nuzero models status" [
+    --provider: string = ""  # Provider name
+] {
+    mut args = ["models", "status"]
+    if ($provider | is-not-empty) { $args = ($args | append ["--provider", $provider]) }
+    let result = run-external zeroclaw ...$args | complete
     let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
     if ($raw | str trim | is-empty) { return [] }
     $raw
     | lines | each {|line| $line | parse "{key}: {value}" } | flatten | update key { str trim } | update value { str trim }
 }
 
-def "nufang doctor" [] {
+def "nuzero memory list" [
+    --category: string = ""  # Filter by category
+    --limit: string = ""     # Max entries to return
+] {
+    mut args = ["memory", "list"]
+    if ($category | is-not-empty) { $args = ($args | append ["--category", $category]) }
+    if ($limit | is-not-empty) { $args = ($args | append ["--limit", $limit]) }
+    let result = run-external zeroclaw ...$args | complete
+    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
+    if ($raw | str trim | is-empty) { return [] }
+    $raw
+    | detect columns --guess | rename -b {|it| $it | str downcase | str replace -a ' ' '_'}
+}
+
+def "nuzero memory stats" [] {
+    mut args = ["memory", "stats"]
+    let result = run-external zeroclaw ...$args | complete
+    let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
+    if ($raw | str trim | is-empty) { return [] }
+    $raw
+    | lines | each {|line| $line | parse "{key}: {value}" } | flatten | update key { str trim } | update value { str trim }
+}
+
+def "nuzero doctor" [] {
     mut args = ["doctor"]
-    let result = run-external openfang ...$args | complete
+    let result = run-external zeroclaw ...$args | complete
     let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
     if ($raw | str trim | is-empty) { return [] }
     $raw
     | lines | enumerate | flatten | rename index line
 }
 
-def "nufang config show" [] {
-    mut args = ["config", "show"]
-    let result = run-external openfang ...$args | complete
+def "nuzero config" [] {
+    mut args = ["config"]
+    let result = run-external zeroclaw ...$args | complete
     let raw = ($result.stdout? | default "") + ($result.stderr? | default "")
     if ($raw | str trim | is-empty) { return [] }
     $raw

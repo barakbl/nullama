@@ -1,214 +1,50 @@
 cli_command = "openfang"
-cli_new_command = "nuof"
+cli_new_command = "nufang"
+cli_version = ""
 
-# ── Agents ────────────────────────────────────────────────
+[[command]]
+args = "status"
+parse_helper = "key-value pairs, colon-separated"
 
 [[command]]
 args = "agent list"
-parse_helper = "tabular aligned columns, header row present"
-
-[[command]]
-args = "agent new"
-positional_args = [
-  { name = "template", type = "string", optional = true, description = "Template name (e.g. coder, assistant). Interactive if omitted" },
-]
-parse_helper = "streaming text, do not parse"
-
-[[command]]
-args = "agent kill"
-positional_args = [
-  { name = "agent_id", type = "string", optional = false, description = "Agent ID (UUID)" },
-]
-parse_helper = "streaming text, do not parse"
-
-# ── Workflows ─────────────────────────────────────────────
-
-[[command]]
-args = "workflow list"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Triggers ──────────────────────────────────────────────
-
-[[command]]
-args = "trigger list"
-flags = [
-  { long = "agent-id", type = "string", description = "Filter by agent ID" },
-]
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Skills ────────────────────────────────────────────────
+parse_helper = "line-oriented text, one agent per line"
 
 [[command]]
 args = "skill list"
-parse_helper = "tabular aligned columns, header row present"
+parse_helper = "line-oriented text, one skill per line"
 
 [[command]]
 args = "skill search"
 positional_args = [
-  { name = "query", type = "string", optional = false, description = "Search query" },
+  { name = "query", type = "string", optional = false, description = "Search query string" },
 ]
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Channels ──────────────────────────────────────────────
+parse_helper = "line-oriented text, one result per line"
 
 [[command]]
 args = "channel list"
 parse_helper = "tabular aligned columns, header row present"
 
-# ── Hands ─────────────────────────────────────────────────
-
 [[command]]
-args = "hand list"
+args = "models"
 parse_helper = "tabular aligned columns, header row present"
-
-[[command]]
-args = "hand active"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Config ────────────────────────────────────────────────
-
-[[command]]
-args = "config show"
-parse_helper = "streaming text, do not parse"
-
-[[command]]
-args = "config get"
-positional_args = [
-  { name = "key", type = "string", optional = false, description = "Dotted key path (e.g. default_model.provider)" },
-]
-parse_helper = "streaming text, do not parse"
-
-# ── Status ────────────────────────────────────────────────
-
-[[command]]
-args = "status"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Models ────────────────────────────────────────────────
-
-[[command]]
-args = "models list"
-flags = [
-  { long = "provider", type = "string", description = "Filter by provider name" },
-]
-parse_helper = "tabular aligned columns, header row present"
-
-[[command]]
-args = "models aliases"
-parse_helper = "tabular aligned columns, header row present"
-
-[[command]]
-args = "models providers"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Gateway ───────────────────────────────────────────────
-
-[[command]]
-args = "gateway status"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Approvals ─────────────────────────────────────────────
-
-[[command]]
-args = "approvals list"
-parse_helper = "tabular aligned columns, header row present"
-
-[[command]]
-args = "approvals approve"
-positional_args = [
-  { name = "id", type = "string", optional = false, description = "Approval request ID" },
-]
-parse_helper = "streaming text, do not parse"
-
-[[command]]
-args = "approvals reject"
-positional_args = [
-  { name = "id", type = "string", optional = false, description = "Approval request ID" },
-]
-parse_helper = "streaming text, do not parse"
-
-# ── Cron ──────────────────────────────────────────────────
-
-[[command]]
-args = "cron list"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Sessions ──────────────────────────────────────────────
 
 [[command]]
 args = "sessions"
-positional_args = [
-  { name = "agent", type = "string", optional = true, description = "Agent name or ID to filter by" },
-]
 parse_helper = "tabular aligned columns, header row present"
-
-# ── Logs ──────────────────────────────────────────────────
 
 [[command]]
 args = "logs"
-flags = [
-  { long = "follow", short = "f", type = "bool", description = "Follow log output in real time" },
-  { long = "lines", type = "string", description = "Number of lines to show" },
-]
-parse_format = "{level}:{message}"
-stderr = true
-follow_flag = "follow"
-
-# ── Vault ─────────────────────────────────────────────────
-
-[[command]]
-args = "vault list"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Security ──────────────────────────────────────────────
-
-[[command]]
-args = "security status"
-parse_helper = "tabular aligned columns, header row present"
-
-[[command]]
-args = "security audit"
-flags = [
-  { long = "limit", type = "string", description = "Maximum number of entries to show" },
-]
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Memory ────────────────────────────────────────────────
-
-[[command]]
-args = "memory list"
-positional_args = [
-  { name = "agent", type = "string", optional = false, description = "Agent name or ID" },
-]
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Devices ───────────────────────────────────────────────
-
-[[command]]
-args = "devices list"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Webhooks ──────────────────────────────────────────────
-
-[[command]]
-args = "webhooks list"
-parse_helper = "tabular aligned columns, header row present"
-
-# ── Integrations ──────────────────────────────────────────
-
-[[command]]
-args = "integrations"
-positional_args = [
-  { name = "query", type = "string", optional = true, description = "Search query (lists all if omitted)" },
-]
-parse_helper = "tabular aligned columns, header row present"
-
-# ── System ────────────────────────────────────────────────
-
-[[command]]
-args = "system info"
 parse_helper = "streaming text, do not parse"
 
 [[command]]
-args = "system version"
-parse_helper = "streaming text, do not parse"
+args = "health"
+parse_helper = "key-value pairs, colon-separated"
+
+[[command]]
+args = "doctor"
+parse_helper = "line-oriented text, each line is a diagnostic result"
+
+[[command]]
+args = "config show"
+parse_helper = "key-value pairs, colon-separated"

@@ -1,0 +1,21 @@
+cli_command = "python3"
+cli_new_command = "nupython"
+cli_version = "3.9.6"
+
+[[command]]
+args = "--version"
+parse_format = "Python {version}"
+
+[[command]]
+args = "-c"
+positional_args = [
+  { name = "code", type = "string", optional = false, description = "Python code to execute" },
+]
+parse_helper = "line-oriented text, one line per output"
+
+[[command]]
+args = "-m"
+positional_args = [
+  { name = "module", type = "string", optional = false, description = "Python module to run as script" },
+]
+parse_helper = "streaming text, do not parse"
