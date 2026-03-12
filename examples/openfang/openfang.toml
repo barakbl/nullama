@@ -1,6 +1,6 @@
 cli_command = "openfang"
 cli_new_command = "nufang"
-cli_version = ""
+cli_version = "0.3.34"
 
 [[command]]
 args = "status"

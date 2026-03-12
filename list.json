@@ -1,0 +1,44 @@
+[
+  {
+    "cli_command": "brew",
+    "cli_new_command": "nubrew",
+    "cli_version": "5.0.16",
+    "url": "https://github.com/barakbl/nu_shell_skills_and_commands/blob/main/examples/brew/brew.nu"
+  },
+  {
+    "cli_command": "docker",
+    "cli_new_command": "nudocker",
+    "cli_version": "29.3.0",
+    "url": "https://github.com/barakbl/nu_shell_skills_and_commands/blob/main/examples/docker/docker.nu"
+  },
+  {
+    "cli_command": "git",
+    "cli_new_command": "nugit",
+    "cli_version": "2.x",
+    "url": "https://github.com/barakbl/nu_shell_skills_and_commands/blob/main/examples/git/git.nu"
+  },
+  {
+    "cli_command": "openfang",
+    "cli_new_command": "nufang",
+    "cli_version": "0.3.34",
+    "url": "https://github.com/barakbl/nu_shell_skills_and_commands/blob/main/examples/openfang/openfang.nu"
+  },
+  {
+    "cli_command": "pip3",
+    "cli_new_command": "nupip",
+    "cli_version": "24.x",
+    "url": "https://github.com/barakbl/nu_shell_skills_and_commands/blob/main/examples/pip/pip3.nu"
+  },
+  {
+    "cli_command": "python3",
+    "cli_new_command": "nupython",
+    "cli_version": "3.9.6",
+    "url": "https://github.com/barakbl/nu_shell_skills_and_commands/blob/main/examples/python/python3.nu"
+  },
+  {
+    "cli_command": "zeroclaw",
+    "cli_new_command": "nuzero",
+    "cli_version": "0.2.0",
+    "url": "https://github.com/barakbl/nu_shell_skills_and_commands/blob/main/examples/zeroclaw/zeroclaw.nu"
+  }
+]

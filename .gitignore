@@ -3,7 +3,7 @@
 
 # Claude Code
 .claude/settings.local.json
-
+tmp.py
 # Editor
 *.swp
 *.swo

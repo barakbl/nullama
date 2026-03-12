@@ -1,6 +1,6 @@
 cli_command = "docker"
 cli_new_command = "nudocker"
-
+cli_version = "29.3.0"
 [[command]]
 args = "ps"
 flags = [
