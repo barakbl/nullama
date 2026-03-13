@@ -1,0 +1,77 @@
+cli_command = "pip3"
+cli_new_command = "pip3"
+
+[[command]]
+args = "list"
+flags = [
+  { long = "outdated", short = "o", type = "bool", description = "List outdated packages" },
+  { long = "uptodate", short = "u", type = "bool", description = "List uptodate packages" },
+  { long = "user", type = "bool", description = "Only output packages installed in user-site" },
+  { long = "local", short = "l", type = "bool", description = "Do not list globally-installed packages" },
+  { long = "not-required", type = "bool", description = "List packages that are not dependencies of installed packages" },
+]
+columns = ["package", "version"]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "install"
+flags = [
+  { long = "requirement", short = "r", type = "string", description = "Install from the given requirements file" },
+  { long = "upgrade", short = "U", type = "bool", description = "Upgrade package to the newest available version" },
+  { long = "editable", short = "e", type = "bool", description = "Install in editable mode from a local path or VCS url" },
+  { long = "no-deps", type = "bool", description = "Don't install package dependencies" },
+  { long = "user", type = "bool", description = "Install to the Python user install directory" },
+  { long = "target", short = "t", type = "string", description = "Install packages into this directory" },
+]
+positional_args = [
+  { name = "package", type = "string", optional = true, description = "Package name (with optional version specifier, e.g. requests>=2.0)" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "uninstall"
+flags = [
+  { long = "yes", short = "y", type = "bool", description = "Don't ask for confirmation of uninstall deletions" },
+  { long = "requirement", short = "r", type = "string", description = "Uninstall all packages listed in the given requirements file" },
+]
+positional_args = [
+  { name = "package", type = "string", optional = true, description = "Package to uninstall" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "show"
+flags = [
+  { long = "files", short = "f", type = "bool", description = "Show the full list of installed files for each package" },
+]
+positional_args = [
+  { name = "package", type = "string", optional = false, description = "Package name to show information about" },
+]
+parse_helper = "key-value pairs"
+
+[[command]]
+args = "freeze"
+flags = [
+  { long = "local", short = "l", type = "bool", description = "Do not list globally-installed packages" },
+  { long = "user", type = "bool", description = "Only output packages installed in user-site" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "download"
+flags = [
+  { long = "requirement", short = "r", type = "string", description = "Download from the given requirements file" },
+  { long = "dest", short = "d", type = "string", description = "Download packages into this directory" },
+]
+positional_args = [
+  { name = "package", type = "string", optional = true, description = "Package to download" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "cache list"
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "check"
+parse_helper = "line-oriented text"

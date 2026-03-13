@@ -1,0 +1,131 @@
+cli_command = "zeroclaw"
+cli_new_command = "zeroclaw"
+
+[[command]]
+args = "status"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "doctor"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "models list"
+flags = [
+  { long = "provider", short = "p", type = "string", description = "Filter models by provider name" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "models status"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "models set"
+positional_args = [
+  { name = "model", type = "string", optional = false, description = "Model name or ID to set as default" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "models refresh"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "channel list"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "channel add"
+positional_args = [
+  { name = "type", type = "string", optional = false, description = "Channel type (telegram, discord, slack, github, matrix, email, etc.)" },
+  { name = "config", type = "string", optional = false, description = "JSON config string" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "channel remove"
+positional_args = [
+  { name = "name", type = "string", optional = false, description = "Channel name to remove" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "channel doctor"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "skill list"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "skill install"
+positional_args = [
+  { name = "source", type = "string", optional = false, description = "Local path, git URL, or registry namespace/name" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "skill remove"
+positional_args = [
+  { name = "name", type = "string", optional = false, description = "Skill name to remove" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "skill new"
+positional_args = [
+  { name = "name", type = "string", optional = true, description = "Skill project name" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "memory list"
+flags = [
+  { long = "category", short = "c", type = "string", description = "Filter by category" },
+  { long = "limit", short = "l", type = "string", description = "Limit number of results" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "memory get"
+positional_args = [
+  { name = "key", type = "string", optional = false, description = "Memory key to retrieve" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "memory stats"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "memory clear"
+flags = [
+  { long = "category", short = "c", type = "string", description = "Clear memories by category" },
+  { long = "yes", short = "y", type = "bool", description = "Skip confirmation prompt" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "config show"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "cron list"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "providers"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "providers-quota"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "integrations"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "memory reindex"
+parse_helper = "streaming text, do not parse"

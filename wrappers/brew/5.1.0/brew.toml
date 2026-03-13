@@ -1,0 +1,195 @@
+cli_command = "brew"
+cli_new_command = "brew"
+
+# install
+[[command]]
+args = "install"
+flags = [
+  { long = "formula", type = "bool", description = "Treat all named arguments as formulae" },
+  { long = "cask", type = "bool", description = "Treat all named arguments as casks" },
+  { long = "verbose", short = "v", type = "bool", description = "Print verification and post-install steps" },
+  { long = "debug", short = "d", type = "bool", description = "If install fails, open an interactive debugging session" },
+  { long = "dry-run", short = "n", type = "bool", description = "Show what would be installed without actually installing" },
+  { long = "fetch-HEAD", type = "bool", description = "Fetch the upstream repository to detect if the HEAD installation is outdated" },
+  { long = "ignore-dependencies", type = "bool", description = "Skip installing any dependencies of any kind" },
+  { long = "only-dependencies", type = "bool", description = "Install dependencies but not the formula itself" },
+  { long = "build-from-source", short = "s", type = "bool", description = "Compile from source even if a bottle is available" },
+  { long = "force", short = "f", type = "bool", description = "Install formulae without checking for previously installed keg-only or non-migrated versions" },
+  { long = "quiet", short = "q", type = "bool", description = "Make some output more quiet" },
+]
+positional_args = [
+  { name = "formula_or_cask", type = "string", optional = false, description = "Formula or cask to install" },
+]
+parse_helper = "streaming text, do not parse"
+
+# uninstall
+[[command]]
+args = "uninstall"
+flags = [
+  { long = "formula", type = "bool", description = "Treat all named arguments as formulae" },
+  { long = "cask", type = "bool", description = "Treat all named arguments as casks" },
+  { long = "force", short = "f", type = "bool", description = "Delete all installed versions of the formula" },
+  { long = "zap", type = "bool", description = "Remove all files associated with a cask (casks only)" },
+  { long = "ignore-dependencies", type = "bool", description = "Uninstall even if other formulae depend on this one" },
+  { long = "dry-run", short = "n", type = "bool", description = "List files that would be uninstalled without actually uninstalling" },
+]
+positional_args = [
+  { name = "formula_or_cask", type = "string", optional = false, description = "Formula or cask to uninstall" },
+]
+parse_helper = "streaming text, do not parse"
+
+# update
+[[command]]
+args = "update"
+flags = [
+  { long = "merge", type = "bool", description = "Use git merge to apply updates (instead of git rebase)" },
+  { long = "auto-update", type = "bool", description = "Run on auto-updates (lower verbosity)" },
+  { long = "force", short = "f", type = "bool", description = "Always do a slower full update check" },
+  { long = "verbose", short = "v", type = "bool", description = "Print warnings for outdated repositories" },
+  { long = "quiet", short = "q", type = "bool", description = "Make some output more quiet" },
+]
+parse_helper = "streaming text, do not parse"
+
+# upgrade
+[[command]]
+args = "upgrade"
+flags = [
+  { long = "formula", type = "bool", description = "Treat all named arguments as formulae" },
+  { long = "cask", type = "bool", description = "Treat all named arguments as casks" },
+  { long = "dry-run", short = "n", type = "bool", description = "Show what would be upgraded without actually upgrading" },
+  { long = "fetch-HEAD", type = "bool", description = "Fetch the upstream repository to detect if the HEAD installation is outdated" },
+  { long = "ignore-pinned", type = "bool", description = "Set a successful exit status even if pinned formulae are not upgraded" },
+  { long = "force", short = "f", type = "bool", description = "Install formulae without checking for previously installed versions" },
+  { long = "verbose", short = "v", type = "bool", description = "Print verification and post-install steps" },
+  { long = "quiet", short = "q", type = "bool", description = "Make some output more quiet" },
+  { long = "greedy", short = "g", type = "bool", description = "Also upgrade casks with auto_updates true or version :latest" },
+]
+positional_args = [
+  { name = "formula_or_cask", type = "string", optional = true, description = "Formula or cask to upgrade (upgrades all if omitted)" },
+]
+parse_helper = "streaming text, do not parse"
+
+# list
+[[command]]
+args = "list"
+flags = [
+  { long = "formula", type = "bool", description = "List only formulae" },
+  { long = "cask", type = "bool", description = "List only casks" },
+  { long = "full-name", type = "bool", description = "Print formulae with fully-qualified names" },
+  { long = "versions", short = "l", type = "bool", description = "Show the version number for installed formulae" },
+  { long = "multiple", type = "bool", description = "Only show formulae with multiple versions installed" },
+  { long = "pinned", type = "bool", description = "List only pinned formulae" },
+  { long = "1", type = "bool", description = "Force output to be one entry per line" },
+  { long = "quiet", short = "q", type = "bool", description = "Make some output more quiet" },
+]
+positional_args = [
+  { name = "formula_or_cask", type = "string", optional = true, description = "Filter list to only the named formula or cask" },
+]
+parse_helper = "line-oriented text, one package per line"
+columns = ["name"]
+
+# search
+[[command]]
+args = "search"
+flags = [
+  { long = "formula", type = "bool", description = "Search for formulae only" },
+  { long = "cask", type = "bool", description = "Search for casks only" },
+  { long = "desc", short = "d", type = "bool", description = "Search for descriptions as well as names" },
+  { long = "eval-all", type = "bool", description = "Evaluate all available formulae and casks" },
+  { long = "open", type = "bool", description = "Open a browser for the formula or cask" },
+  { long = "closed", type = "bool", description = "Open a browser for the formula or cask issues" },
+  { long = "repology", type = "bool", description = "Open a browser for the formula or cask on repology.org" },
+]
+positional_args = [
+  { name = "query", type = "string", optional = false, description = "Text or /regex/ to search for" },
+]
+parse_helper = "line-oriented text, one result per line"
+columns = ["name"]
+
+# info
+[[command]]
+args = "info"
+flags = [
+  { long = "formula", type = "bool", description = "Treat all named arguments as formulae" },
+  { long = "cask", type = "bool", description = "Treat all named arguments as casks" },
+  { long = "analytics", type = "bool", description = "Display global Homebrew analytics data" },
+  { long = "days", type = "string", description = "How many days of analytics data to retrieve (30, 90, 365)" },
+  { long = "category", type = "string", description = "Which analytics category to display (install, install-on-request, build-error)" },
+  { long = "json", short = "j", type = "bool", description = "Output in JSON format (use with --all or formula names)" },
+  { long = "all", type = "bool", description = "Print JSON of all available formulae" },
+  { long = "installed", type = "bool", description = "Print JSON of all installed formulae" },
+  { long = "eval-all", type = "bool", description = "Evaluate all available formulae and casks" },
+  { long = "verbose", short = "v", type = "bool", description = "Show more verbose analytics data for all installs" },
+  { long = "quiet", short = "q", type = "bool", description = "Make some output more quiet" },
+]
+positional_args = [
+  { name = "formula_or_cask", type = "string", optional = true, description = "Formula or cask to show info for" },
+]
+parse_helper = "key-value pairs, colon-separated"
+
+# doctor
+[[command]]
+args = "doctor"
+flags = [
+  { long = "list-checks", type = "bool", description = "List all audit methods, which can be run individually if provided as arguments" },
+  { long = "audit-debug", short = "D", type = "bool", description = "Enable debugging and profiling of audit methods" },
+  { long = "quiet", short = "q", type = "bool", description = "Make some output more quiet" },
+  { long = "verbose", short = "v", type = "bool", description = "Make some output more verbose" },
+]
+parse_helper = "line-oriented text, each line is a diagnostic message"
+
+# outdated
+[[command]]
+args = "outdated"
+flags = [
+  { long = "formula", type = "bool", description = "List only outdated formulae" },
+  { long = "cask", type = "bool", description = "List only outdated casks" },
+  { long = "json", short = "j", type = "bool", description = "Output in JSON format" },
+  { long = "fetch-HEAD", type = "bool", description = "Fetch upstream repository to detect if the HEAD installation is outdated" },
+  { long = "greedy", short = "g", type = "bool", description = "Print outdated casks with auto_updates true or version :latest too" },
+  { long = "greedy-latest", type = "bool", description = "Print outdated casks with version :latest too" },
+  { long = "greedy-auto-updates", type = "bool", description = "Print outdated casks with auto_updates true too" },
+  { long = "verbose", short = "v", type = "bool", description = "Include detailed version information" },
+  { long = "quiet", short = "q", type = "bool", description = "List only the names of outdated kegs" },
+]
+parse_helper = "line-oriented text, one package per line with version info"
+parse_format = "{name} ({current_version}) != {latest_version}"
+columns = ["name", "current_version", "latest_version"]
+
+# leaves
+[[command]]
+args = "leaves"
+flags = [
+  { long = "installed-on-request", short = "r", type = "bool", description = "Only list leaves that were manually installed" },
+  { long = "installed-as-dependency", short = "p", type = "bool", description = "Only list leaves that were installed as dependencies" },
+]
+parse_helper = "line-oriented text, one package per line"
+columns = ["name"]
+
+# deps
+[[command]]
+args = "deps"
+flags = [
+  { long = "formula", type = "bool", description = "Treat all named arguments as formulae" },
+  { long = "cask", type = "bool", description = "Treat all named arguments as casks" },
+  { long = "1", type = "bool", description = "Only show direct dependencies, not recursive" },
+  { long = "full-name", short = "n", type = "bool", description = "List dependencies by their full name" },
+  { long = "union", type = "bool", description = "Show the union of dependencies for multiple formulae" },
+  { long = "for-each", type = "bool", description = "Print a formula per line with each formula's dependencies" },
+  { long = "installed", type = "bool", description = "List dependencies for formulae that are currently installed" },
+  { long = "eval-all", type = "bool", description = "Evaluate all available formulae" },
+  { long = "include-build", type = "bool", description = "Include build dependencies for formula" },
+  { long = "include-optional", type = "bool", description = "Include optional dependencies for formula" },
+  { long = "include-test", type = "bool", description = "Include test dependencies for formula" },
+  { long = "skip-recommended", type = "bool", description = "Skip recommended dependencies for formula" },
+  { long = "tree", type = "bool", description = "Show dependencies as a tree" },
+  { long = "graph", type = "bool", description = "Show dependencies as a directed graph" },
+  { long = "dot", type = "bool", description = "Show text-based graph description in DOT format" },
+  { long = "annotate", type = "bool", description = "Mark any build, test, optional, or recommended dependencies" },
+  { long = "quiet", short = "q", type = "bool", description = "Make some output more quiet" },
+]
+positional_args = [
+  { name = "formula_or_cask", type = "string", optional = true, description = "Formula or cask to list dependencies for" },
+]
+parse_helper = "line-oriented text, one dependency per line"
+columns = ["name"]

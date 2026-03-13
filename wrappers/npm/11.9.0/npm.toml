@@ -1,0 +1,91 @@
+cli_command = "npm"
+cli_new_command = "npm"
+
+[[command]]
+args = "install"
+flags = [
+  { long = "save-dev", short = "D", type = "bool", description = "Save to devDependencies" },
+  { long = "save-optional", short = "O", type = "bool", description = "Save to optionalDependencies" },
+  { long = "global", short = "g", type = "bool", description = "Install package globally" },
+  { long = "no-save", type = "bool", description = "Do not save to package.json" },
+]
+positional_args = [
+  { name = "package", type = "string", optional = true, description = "Package to install (omit to install from package.json)" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "uninstall"
+flags = [
+  { long = "save-dev", short = "D", type = "bool", description = "Remove from devDependencies" },
+  { long = "global", short = "g", type = "bool", description = "Uninstall a global package" },
+]
+positional_args = [
+  { name = "package", type = "string", optional = false, description = "Package to uninstall" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "update"
+flags = [
+  { long = "global", short = "g", type = "bool", description = "Update global packages" },
+]
+positional_args = [
+  { name = "package", type = "string", optional = true, description = "Package to update (omit to update all)" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "ls"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "Show all installed packages including transitive dependencies" },
+  { long = "global", short = "g", type = "bool", description = "List global packages" },
+  { long = "depth", type = "string", description = "Max display depth of the dependency tree" },
+  { long = "json", type = "bool", description = "Output as JSON" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "outdated"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "Show all outdated packages" },
+  { long = "global", short = "g", type = "bool", description = "Check global packages" },
+  { long = "json", type = "bool", description = "Output as JSON" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "run"
+positional_args = [
+  { name = "script", type = "string", optional = false, description = "Script name from package.json scripts" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "test"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "audit"
+flags = [
+  { long = "fix", type = "bool", description = "Automatically install compatible updates to vulnerable dependencies" },
+  { long = "json", type = "bool", description = "Output audit report as JSON" },
+  { long = "production", type = "bool", description = "Only audit production dependencies" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "publish"
+flags = [
+  { long = "access", type = "string", description = "Set package access level: public or restricted" },
+  { long = "tag", type = "string", description = "Register published package with this tag" },
+  { long = "dry-run", type = "bool", description = "Performs all steps except actually publishing" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "init"
+flags = [
+  { long = "yes", short = "y", type = "bool", description = "Automatically generate package.json with defaults" },
+]
+parse_helper = "streaming text, do not parse"

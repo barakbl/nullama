@@ -16,7 +16,7 @@ The file follows this schema:
 
 ```toml
 cli_command = "tool"            # The CLI tool to wrap
-cli_new_command = "nutool"      # Nu command name prefix
+cli_new_command = "tool"        # Nu command name — defaults to same as cli_command (e.g. "docker", "brew")
 
 [[command]]
 args = "subcommand --fixed-flag" # Subcommand + fixed args (required)
@@ -83,7 +83,7 @@ For each `[[command]]` entry, generate a Nushell `def` block following these rul
 
 ### 1. Command Name
 - Format: `"cli_new_command subcommand"` where subcommand is the first word of `args`
-- Example: cli_new_command = "nudocker", args = "ps -a" → `def "nudocker ps"`
+- Example: cli_new_command = "docker", args = "ps -a" → `def "docker ps"`
 
 ### 2. Signature
 - **Bool flags**: `--flagname (-x)` (no type annotation)

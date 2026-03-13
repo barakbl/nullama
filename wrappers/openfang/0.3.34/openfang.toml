@@ -1,0 +1,137 @@
+cli_command = "openfang"
+cli_new_command = "openfang"
+
+[[command]]
+args = "status"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "health"
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "doctor"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "agent list"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "agent new"
+positional_args = [
+  { name = "name", type = "string", optional = true, description = "Agent template name" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "agent chat"
+positional_args = [
+  { name = "agent", type = "string", optional = true, description = "Agent name to chat with" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "agent kill"
+positional_args = [
+  { name = "agent", type = "string", optional = false, description = "Agent name or ID to kill" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "skill list"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "skill search"
+positional_args = [
+  { name = "query", type = "string", optional = false, description = "Search query for FangHub skills" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "skill install"
+positional_args = [
+  { name = "name", type = "string", optional = false, description = "Skill name or local path to install" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "skill remove"
+positional_args = [
+  { name = "name", type = "string", optional = false, description = "Skill name to remove" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "models list"
+flags = [
+  { long = "provider", short = "p", type = "string", description = "Filter models by provider" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "models providers"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "channel list"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "config show"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "config get"
+positional_args = [
+  { name = "key", type = "string", optional = false, description = "Config key to get" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "config set"
+positional_args = [
+  { name = "key", type = "string", optional = false, description = "Config key to set" },
+  { name = "value", type = "string", optional = false, description = "Value to set" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "logs"
+flags = [
+  { long = "follow", short = "f", type = "bool", description = "Follow log output" },
+]
+parse_helper = "streaming text, do not parse"
+follow_flag = "follow"
+
+[[command]]
+args = "cron list"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "sessions"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "memory list"
+flags = [
+  { long = "category", short = "c", type = "string", description = "Filter by category" },
+  { long = "limit", short = "n", type = "string", description = "Limit number of results" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "memory get"
+positional_args = [
+  { name = "key", type = "string", optional = false, description = "Memory key to retrieve" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "memory stats"
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "integrations"
+parse_helper = "tabular output with headers"

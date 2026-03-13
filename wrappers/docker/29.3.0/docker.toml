@@ -1,0 +1,148 @@
+cli_command = "docker"
+cli_new_command = "docker"
+
+[[command]]
+args = "ps"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "Show all containers (default shows just running)" },
+  { long = "filter", short = "f", type = "string", description = "Filter output based on conditions provided" },
+  { long = "quiet", short = "q", type = "bool", description = "Only display container IDs" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "images"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "Show all images (including intermediate)" },
+  { long = "filter", short = "f", type = "string", description = "Filter output based on conditions provided" },
+  { long = "quiet", short = "q", type = "bool", description = "Only show image IDs" },
+]
+positional_args = [
+  { name = "repository", type = "string", optional = true, description = "Repository[:tag] to filter" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "logs"
+flags = [
+  { long = "follow", short = "f", type = "bool", description = "Follow log output" },
+  { long = "tail", short = "n", type = "string", description = "Number of lines to show from end (default all)" },
+  { long = "timestamps", short = "t", type = "bool", description = "Show timestamps" },
+  { long = "since", type = "string", description = "Show logs since timestamp or relative time (e.g. 42m)" },
+]
+positional_args = [
+  { name = "container", type = "string", optional = false, description = "Container name or ID" },
+]
+parse_helper = "streaming text, do not parse"
+follow_flag = "follow"
+stderr = true
+
+[[command]]
+args = "build"
+flags = [
+  { long = "tag", short = "t", type = "string", description = "Name and optionally a tag (name:tag)" },
+  { long = "file", short = "f", type = "string", description = "Name of the Dockerfile" },
+  { long = "no-cache", type = "bool", description = "Do not use cache when building the image" },
+  { long = "platform", type = "string", description = "Set target platform (e.g. linux/amd64)" },
+]
+positional_args = [
+  { name = "path", type = "string", optional = false, description = "Build context path" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "run"
+flags = [
+  { long = "rm", type = "bool", description = "Automatically remove container when it exits" },
+  { long = "detach", short = "d", type = "bool", description = "Run container in background and print container ID" },
+  { long = "interactive", short = "i", type = "bool", description = "Keep STDIN open even if not attached" },
+  { long = "tty", short = "t", type = "bool", description = "Allocate a pseudo-TTY" },
+  { long = "publish", short = "p", type = "string", description = "Publish a container port to the host (host:container)" },
+  { long = "volume", short = "v", type = "string", description = "Bind mount a volume" },
+  { long = "name", type = "string", description = "Assign a name to the container" },
+  { long = "env", short = "e", type = "string", description = "Set environment variables" },
+  { long = "network", type = "string", description = "Connect container to a network" },
+]
+positional_args = [
+  { name = "image", type = "string", optional = false, description = "Image to run" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "exec"
+flags = [
+  { long = "interactive", short = "i", type = "bool", description = "Keep STDIN open even if not attached" },
+  { long = "tty", short = "t", type = "bool", description = "Allocate a pseudo-TTY" },
+  { long = "detach", short = "d", type = "bool", description = "Detached mode: run command in background" },
+  { long = "env", short = "e", type = "string", description = "Set environment variables" },
+]
+positional_args = [
+  { name = "container", type = "string", optional = false, description = "Container name or ID" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "pull"
+positional_args = [
+  { name = "image", type = "string", optional = false, description = "Image to pull (name[:tag|@digest])" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "push"
+positional_args = [
+  { name = "image", type = "string", optional = false, description = "Image to push (name[:tag])" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "rm"
+flags = [
+  { long = "force", short = "f", type = "bool", description = "Force removal of a running container" },
+  { long = "volumes", short = "v", type = "bool", description = "Remove anonymous volumes associated with the container" },
+]
+positional_args = [
+  { name = "container", type = "string", optional = false, description = "Container name or ID" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "rmi"
+flags = [
+  { long = "force", short = "f", type = "bool", description = "Force removal of the image" },
+]
+positional_args = [
+  { name = "image", type = "string", optional = false, description = "Image name or ID" },
+]
+parse_helper = "line-oriented text"
+
+[[command]]
+args = "inspect"
+positional_args = [
+  { name = "name", type = "string", optional = false, description = "Container, image, volume, network, or task name or ID" },
+]
+parse_helper = "streaming text, do not parse"
+
+[[command]]
+args = "stats --no-stream"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "Show all containers (default shows just running)" },
+]
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "network ls"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "volume ls"
+parse_helper = "tabular output with headers"
+
+[[command]]
+args = "system prune"
+flags = [
+  { long = "all", short = "a", type = "bool", description = "Remove all unused images not just dangling ones" },
+  { long = "force", short = "f", type = "bool", description = "Do not prompt for confirmation" },
+  { long = "volumes", type = "bool", description = "Prune anonymous volumes" },
+]
+parse_helper = "streaming text, do not parse"
