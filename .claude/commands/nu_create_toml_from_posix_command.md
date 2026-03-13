@@ -8,7 +8,7 @@ The CLI command to wrap: $ARGUMENTS
 
 ### 1. Inspect the command
 
-Run `$ARGUMENTS --version` (or `$ARGUMENTS -V`, or `$ARGUMENTS version`) to capture the version string. This will be stored in the TOML header.
+Run `$ARGUMENTS --version` (or `$ARGUMENTS -V`, or `$ARGUMENTS version`) to capture the version string. This will be stored in the TOML header. If none of these return a recognisable version string, ask the user: "I couldn't detect the version of `$ARGUMENTS` automatically. What version are you using?" and use their answer as `cli_version`.
 
 Run `$ARGUMENTS --help` (or `$ARGUMENTS -h`, or `man $ARGUMENTS`) to discover available subcommands, flags, and output format.
 
@@ -121,7 +121,13 @@ column_types = {}               # type coercion per column
 
 ### 4. Write the file
 
-Write the generated TOML to `./$ARGUMENTS.toml` in the current working directory. Set `timestamp_created` to the current date and time in ISO 8601 format (e.g. `"2026-03-13T14:00:00Z"`).
+Determine the output path from the values in the generated TOML:
+
+```
+wrappers/<cli_command>/<cli_version>/<cli_command>.toml
+```
+
+Create the directory if it doesn't exist (`mkdir -p`), then write the TOML there. Set `timestamp_created` to the current date and time in ISO 8601 format (e.g. `"2026-03-13T14:00:00Z"`).
 
 After writing, tell the user:
-> Created `$ARGUMENTS.toml` — you can now run `/to_nu $ARGUMENTS.toml` to generate the Nushell commands.
+> Created `wrappers/<cli_command>/<cli_version>/<cli_command>.toml` — you can now run `/to_nu wrappers/<cli_command>/<cli_version>/<cli_command>.toml` to generate the Nushell commands.

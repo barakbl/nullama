@@ -177,7 +177,16 @@ If `reverse = true`, append `| reverse` at the end of the pipeline.
 
 ## Output Format
 
-Output ONLY the generated `def` blocks, one after another, with a blank line between each. No markdown fences, no explanation, no preamble. The output should be ready to paste directly into a Nushell `config.nu` or module file.
+Write the generated `def` blocks to a `.nu` file in the same directory as the input TOML:
+
+```
+wrappers/<cli_command>/<cli_version>/<cli_command>.nu
+```
+
+Create the directory with `mkdir -p` if it doesn't exist. The file should contain ONLY the generated `def` blocks, one after another, with a blank line between each — no markdown fences, no explanation, no preamble.
+
+After writing, tell the user:
+> Created `wrappers/<cli_command>/<cli_version>/<cli_command>.nu`.
 
 ## Important Notes
 

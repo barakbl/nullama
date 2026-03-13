@@ -337,6 +337,20 @@
     .live-item .lver  { color: var(--muted); font-size: 0.78rem; min-width: 60px; }
     .live-item a { color: var(--muted); font-size: 0.78rem; text-decoration: none; }
     .live-item a:hover { color: var(--accent); }
+    .older-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.72rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: auto;
+      font-family: inherit;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .older-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    .older-versions .live-item { background: rgba(0,0,0,0.15); }
 
     /* ── AI TOOL TABS ── */
     .tool-tabs {
@@ -726,18 +740,42 @@ nugit log --max-count 10 | <span class="kw">where</span> author == <span class="
     .then(r => r.json())
     .then(data => {
       const el = document.getElementById('live-list');
-      el.innerHTML = data.map(d => `
+      el.innerHTML = data.map((d, i) => {
+        const latest = d.versions[0] || {};
+        const older  = d.versions.slice(1);
+        const olderId = `older-${i}`;
+        return `
         <div class="live-item">
           <span class="lname">${d.cli_command}</span>
           <span class="lnew">${d.cli_new_command}</span>
-          <span class="lver">v${d.cli_version || '—'}</span>
-          ${d.url ? `<a href="${d.url}" target="_blank">view .nu ↗</a>` : ''}
-        </div>`).join('');
+          <span class="lver">v${latest.cli_version || '—'}</span>
+          ${latest.url ? `<a href="${latest.url}" target="_blank">view .nu ↗</a>` : ''}
+          ${older.length ? `<button class="older-toggle" onclick="toggleOlder('${olderId}')">+${older.length} older</button>` : ''}
+        </div>
+        ${older.length ? `
+        <div id="${olderId}" class="older-versions" style="display:none;">
+          ${older.map(v => `
+          <div class="live-item older">
+            <span class="lname" style="opacity:0"></span>
+            <span class="lnew" style="color:var(--muted)">${d.cli_new_command}</span>
+            <span class="lver">v${v.cli_version || '—'}</span>
+            ${v.url ? `<a href="${v.url}" target="_blank">view .nu ↗</a>` : ''}
+          </div>`).join('')}
+        </div>` : ''}`;
+      }).join('');
     })
     .catch(() => {
       document.getElementById('live-list').innerHTML =
         '<div style="color:var(--muted);font-size:0.85rem;">Could not load list.json</div>';
     });
+
+  function toggleOlder(id) {
+    const el = document.getElementById(id);
+    const btn = el.previousElementSibling.querySelector('.older-toggle');
+    const visible = el.style.display !== 'none';
+    el.style.display = visible ? 'none' : 'block';
+    btn.textContent = visible ? btn.textContent.replace('▲','').trim() + '' : '▲ hide';
+  }
 </script>
 </body>
 </html>
