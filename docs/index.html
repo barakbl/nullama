@@ -338,6 +338,50 @@
     .live-item a { color: var(--muted); font-size: 0.78rem; text-decoration: none; }
     .live-item a:hover { color: var(--accent); }
 
+    /* ── AI TOOL TABS ── */
+    .tool-tabs {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+    .tool-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 0.45rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s, border-color 0.2s;
+      position: relative;
+      bottom: -1px;
+      font-family: inherit;
+    }
+    .tool-tab:hover { color: var(--text); }
+    .tool-tab.active {
+      color: var(--accent);
+      background: var(--bg2);
+      border-color: var(--border);
+      border-bottom-color: var(--bg2);
+    }
+    .tool-tab .tool-icon { margin-right: 0.35rem; }
+    .tool-panel {
+      display: none;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      padding: 1.2rem 1.5rem;
+    }
+    .tool-panel.active { display: block; }
+    .tool-panel pre { margin: 0.4rem 0 0; border-radius: 6px; }
+    .tool-panel p { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.5rem; }
+
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
@@ -457,7 +501,7 @@
 
 <!-- HERO (generate your own) -->
 <div class="hero">
-  <div class="badge">Claude Code · Nushell · POSIX</div>
+  <div class="badge">Claude Code · Codex · Ollama · OpenCode · Nushell</div>
   <h1>Generate Wrappers<br>for Any CLI Tool</h1>
   <p>Point it at any POSIX CLI — get structured, tab-completing Nushell <code>def</code> blocks back. Automatically.</p>
   <div class="cta-group">
@@ -503,8 +547,33 @@ cd nullama</code></pre>
         <div class="step-num">2</div>
         <div class="step-body">
           <h4>Generate a TOML spec from any CLI tool</h4>
-          <pre><code><span class="cm"># Inside Claude Code (from this directory)</span>
+          <p style="color:var(--muted);font-size:0.85rem;margin:0.3rem 0 0.8rem;">Pick your AI coding assistant:</p>
+          <div class="tool-tabs" role="tablist">
+            <button class="tool-tab active" onclick="switchTab(event,'tab-cc')" role="tab"><span class="tool-icon">⚡</span>Claude Code</button>
+            <button class="tool-tab" onclick="switchTab(event,'tab-codex')" role="tab"><span class="tool-icon">🤖</span>Codex</button>
+            <button class="tool-tab" onclick="switchTab(event,'tab-ollama')" role="tab"><span class="tool-icon">🦙</span>Ollama</button>
+            <button class="tool-tab" onclick="switchTab(event,'tab-opencode')" role="tab"><span class="tool-icon">🔷</span>OpenCode</button>
+          </div>
+          <div id="tab-cc" class="tool-panel active">
+            <p>Uses the built-in slash command — inspects the CLI and writes the TOML automatically.</p>
+            <pre><code>/nu_create_toml_from_posix_command docker</code></pre>
+          </div>
+          <div id="tab-codex" class="tool-panel">
+            <p>Pass the prompt file directly to the Codex CLI with the tool name substituted in.</p>
+            <pre><code><span class="cm"># One-liner — reads the prompt, replaces $ARGUMENTS, runs Codex</span>
+codex "$(sed 's/\$ARGUMENTS/docker/g' .claude/commands/nu_create_toml_from_posix_command.md)"</code></pre>
+          </div>
+          <div id="tab-ollama" class="tool-panel">
+            <p>Pipe the prompt file into <code>ollama run</code> with any local model.</p>
+            <pre><code><span class="cm"># Replace llama3.2 with any model you have pulled</span>
+sed 's/\$ARGUMENTS/docker/g' .claude/commands/nu_create_toml_from_posix_command.md \
+  | ollama run llama3.2</code></pre>
+          </div>
+          <div id="tab-opencode" class="tool-panel">
+            <p>OpenCode picks up custom slash commands from <code>.claude/commands/</code> automatically when you open the project.</p>
+            <pre><code><span class="cm"># Open OpenCode from the repo root, then run:</span>
 /nu_create_toml_from_posix_command docker</code></pre>
+          </div>
         </div>
       </div>
       <div class="step">
@@ -620,6 +689,14 @@ nupip list --outdated | <span class="kw">sort-by</span> version</code></pre>
 </footer>
 
 <script>
+  function switchTab(e, id) {
+    const tabset = e.target.closest('.step-body');
+    tabset.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
+    tabset.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
   fetch('list.json')
     .then(r => r.json())
     .then(data => {
