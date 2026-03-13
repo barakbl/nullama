@@ -24,9 +24,9 @@ Improvements:
 v0.2.0 — 2026-03-12
 --------------------
 
-New examples:
-  - examples/brew/brew.toml + brew.nu: Homebrew wrapper (list, info, search, outdated, deps, services)
-  - examples/pip/pip.toml + pip.nu: pip3 wrapper (list, show, freeze, install, check)
+New wrappers:
+  - wrappers/brew/brew.toml + brew.nu: Homebrew wrapper (list, info, search, outdated, deps, services)
+  - wrappers/pip/pip.toml + pip.nu: pip3 wrapper (list, show, freeze, install, check)
 
 Improvements:
   - README redesigned with Nushell project intro, disclaimer, icons, usage examples, and examples table
@@ -54,8 +54,8 @@ Features:
   - Row reversal support
   - Interactive TOML generator asks user for full vs specific subcommands and flag scope
 
-Examples:
-  - examples/docker/docker.toml: Docker wrapper spec (ps, images, logs)
-  - examples/docker/docker.nu: Generated Nushell commands for Docker
-  - examples/openfang/openfang.toml: OpenFang wrapper spec (33 subcommands)
-  - examples/openfang/openfang.nu: Generated Nushell commands for OpenFang
+Wrappers:
+  - wrappers/docker/docker.toml: Docker wrapper spec (ps, images, logs)
+  - wrappers/docker/docker.nu: Generated Nushell commands for Docker
+  - wrappers/openfang/openfang.toml: OpenFang wrapper spec (33 subcommands)
+  - wrappers/openfang/openfang.nu: Generated Nushell commands for OpenFang

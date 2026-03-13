@@ -1,4 +1,4 @@
-# Contributing to Nu Shell Skills and Commands
+# Contributing to Nullama
 
 Thank you for your interest in contributing! This document provides guidelines for contributing to this project.
 
@@ -25,9 +25,9 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 ### Adding a New CLI Wrapper
 
-1. Create a directory under `examples/` named after the CLI tool (e.g., `examples/mytool/`).
+1. Create a directory under `wrappers/` named after the CLI tool (e.g., `wrappers/mytool/`).
 2. Add a TOML spec file (`mytool.toml`) following the schema documented in the README.
-3. Generate the Nushell commands with `/to_nu examples/mytool/mytool.toml`.
+3. Generate the Nushell commands with `/to_nu wrappers/mytool/mytool.toml`.
 4. Include both the `.toml` and generated `.nu` file in your PR.
 
 ### Code Style

@@ -74,8 +74,9 @@ For each selected subcommand, run `$ARGUMENTS <subcommand> --help` to discover i
 
 ```toml
 cli_command = "tool"            # The original CLI tool name
-cli_new_command = "nutool"      # Nu command prefix — use "nu" + tool name (e.g. "nudocker", "nukubectl")
+cli_new_command = "tool"        # Nu command name — defaults to same as cli_command (e.g. "docker", "kubectl")
 cli_version = "1.2.3"          # Version of the CLI tool at generation time
+timestamp_created = "2026-01-01T00:00:00Z"  # ISO 8601 timestamp when this spec was generated — replace with actual current datetime
 
 [[command]]
 args = "subcommand"             # Subcommand + any fixed args
@@ -105,7 +106,7 @@ column_types = {}               # type coercion per column
 
 ### Rules for generating good defaults
 
-- **cli_new_command**: Prefix with `nu` — e.g. `docker` → `nudocker`, `kubectl` → `nukubectl`, `git` → `nugit`
+- **cli_new_command**: Default to the same value as `cli_command` — e.g. `docker` → `docker`, `kubectl` → `kubectl`, `git` → `git`
 - **Flags**:
   - Always include `short` if the CLI tool defines one
   - Omit `short` if the CLI tool doesn't have one
@@ -120,7 +121,7 @@ column_types = {}               # type coercion per column
 
 ### 4. Write the file
 
-Write the generated TOML to `./$ARGUMENTS.toml` in the current working directory.
+Write the generated TOML to `./$ARGUMENTS.toml` in the current working directory. Set `timestamp_created` to the current date and time in ISO 8601 format (e.g. `"2026-03-13T14:00:00Z"`).
 
 After writing, tell the user:
 > Created `$ARGUMENTS.toml` — you can now run `/to_nu $ARGUMENTS.toml` to generate the Nushell commands.

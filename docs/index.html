@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nulama</title>
+  <title>Nullama</title>
   <style>
     :root {
       --bg:       #050d1a;
@@ -358,22 +358,111 @@
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="#">⚡ Nulama</a>
+  <a class="logo" href="#">⚡ Nullama</a>
+  <a href="#wrappers">Ready to Use</a>
   <a href="#quickstart">Quick Start</a>
   <a href="#commands">Commands</a>
-  <a href="#examples">Examples</a>
   <a href="#features">Features</a>
-  <a class="gh-link" href="https://github.com/barakbl/nulama" target="_blank">GitHub ↗</a>
+  <a class="gh-link" href="https://github.com/barakbl/nullama" target="_blank">GitHub ↗</a>
 </nav>
 
-<!-- HERO -->
+<!-- READY TO USE -->
+<section id="wrappers" style="padding-top: 3rem;">
+  <div class="container">
+    <div class="section-label">Ready to Use</div>
+    <h2>Nushell Wrappers</h2>
+    <p>Drop-in Nushell commands for popular CLI tools — structured output, tab completion, streaming. No setup required.</p>
+
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="icon">🐳</div>
+        <h4>Docker</h4>
+        <div class="nu-name">nudocker</div>
+        <div class="cmds">ps · images · logs · stats · top · events · port · inspect · diff</div>
+        <div class="links">
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/docker/docker.toml">TOML</a>
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/docker/docker.nu">.nu</a>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="icon">🍺</div>
+        <h4>Homebrew</h4>
+        <div class="nu-name">nubrew</div>
+        <div class="cmds">list · info · search · outdated · deps · services</div>
+        <div class="links">
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/brew/brew.toml">TOML</a>
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/brew/brew.nu">.nu</a>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="icon">📦</div>
+        <h4>pip</h4>
+        <div class="nu-name">nupip</div>
+        <div class="cmds">list · show · freeze · install · check</div>
+        <div class="links">
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/pip/pip.toml">TOML</a>
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/pip/pip3.nu">.nu</a>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="icon">🐙</div>
+        <h4>Git</h4>
+        <div class="nu-name">nugit</div>
+        <div class="cmds">log · status · branch · diff · remote · stash · tag · show</div>
+        <div class="links">
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/git/git.toml">TOML</a>
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/git/git.nu">.nu</a>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="icon">🐍</div>
+        <h4>Python</h4>
+        <div class="nu-name">nupython</div>
+        <div class="cmds">version · eval · module</div>
+        <div class="links">
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/python/python.toml">TOML</a>
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/python/python3.nu">.nu</a>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="icon">🦀</div>
+        <h4>ZeroClaw</h4>
+        <div class="nu-name">nuzero</div>
+        <div class="cmds">status · providers · models · memory · doctor · config</div>
+        <div class="links">
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/zeroclaw/zeroclaw.toml">TOML</a>
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/zeroclaw/zeroclaw.nu">.nu</a>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="icon">📷</div>
+        <h4>OpenFang</h4>
+        <div class="nu-name">nufang</div>
+        <div class="cmds">status · agent · skill · channel · sessions · logs · health</div>
+        <div class="links">
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/openfang/openfang.toml">TOML</a>
+          <a href="https://github.com/barakbl/nullama/blob/main/wrappers/openfang/openfang.nu">.nu</a>
+        </div>
+      </div>
+    </div>
+
+    <h3>Load any wrapper — no clone needed</h3>
+    <pre><code>http get https://raw.githubusercontent.com/barakbl/nullama/main/wrappers/brew/brew.nu | save brew.nu
+<span class="kw">source</span> brew.nu</code></pre>
+
+    <h3>All wrappers — live from list.json</h3>
+    <div id="live-list"><div style="color:var(--muted);font-size:0.85rem;">Loading…</div></div>
+  </div>
+</section>
+
+<!-- HERO (generate your own) -->
 <div class="hero">
   <div class="badge">Claude Code · Nushell · POSIX</div>
-  <h1>Generate Nushell Commands<br>from Any CLI Tool</h1>
+  <h1>Generate Wrappers<br>for Any CLI Tool</h1>
   <p>Point it at any POSIX CLI — get structured, tab-completing Nushell <code>def</code> blocks back. Automatically.</p>
   <div class="cta-group">
-    <a class="btn btn-primary" href="#quickstart">Get Started</a>
-    <a class="btn btn-outline" href="https://github.com/barakbl/nulama" target="_blank">View on GitHub</a>
+    <a class="btn btn-primary" href="#quickstart">Generate Your Own</a>
+    <a class="btn btn-outline" href="https://github.com/barakbl/nullama" target="_blank">View on GitHub</a>
   </div>
 
   <div class="flow">
@@ -406,8 +495,8 @@
         <div class="step-num">1</div>
         <div class="step-body">
           <h4>Clone the repo</h4>
-          <pre><code>git clone git@github.com:barakbl/nulama.git
-cd nulama</code></pre>
+          <pre><code>git clone git@github.com:barakbl/nullama.git
+cd nullama</code></pre>
         </div>
       </div>
       <div class="step">
@@ -438,10 +527,6 @@ nugit log --max-count 10 | <span class="kw">where</span> author == <span class="
         </div>
       </div>
     </div>
-
-    <h3>No clone needed — fetch directly from GitHub</h3>
-    <pre><code>http get https://raw.githubusercontent.com/barakbl/nulama/main/examples/brew/brew.nu | save brew.nu
-<span class="kw">source</span> brew.nu</code></pre>
   </div>
 </section>
 
@@ -462,91 +547,6 @@ nugit log --max-count 10 | <span class="kw">where</span> author == <span class="
       <p>Reads a TOML spec and generates Nushell <code>def</code> blocks with structured output parsing, tab completion, and streaming support.</p>
       <p>If the TOML doesn't exist yet, <code>/to_nu</code> will offer to create it automatically.</p>
     </div>
-  </div>
-</section>
-
-<!-- LIVE EXAMPLES -->
-<section id="examples">
-  <div class="container">
-    <div class="section-label">Pre-built Wrappers</div>
-    <h2>Examples</h2>
-    <p>Ready-to-use wrappers for popular tools — load them straight into Nushell.</p>
-
-    <div class="examples-grid">
-      <div class="example-card">
-        <div class="icon">🐳</div>
-        <h4>Docker</h4>
-        <div class="nu-name">nudocker</div>
-        <div class="cmds">ps · images · logs · stats · top · events · port · inspect · diff</div>
-        <div class="links">
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/docker/docker.toml">TOML</a>
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/docker/docker.nu">.nu</a>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="icon">🍺</div>
-        <h4>Homebrew</h4>
-        <div class="nu-name">nubrew</div>
-        <div class="cmds">list · info · search · outdated · deps · services</div>
-        <div class="links">
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/brew/brew.toml">TOML</a>
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/brew/brew.nu">.nu</a>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="icon">📦</div>
-        <h4>pip</h4>
-        <div class="nu-name">nupip</div>
-        <div class="cmds">list · show · freeze · install · check</div>
-        <div class="links">
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/pip/pip.toml">TOML</a>
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/pip/pip3.nu">.nu</a>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="icon">🐙</div>
-        <h4>Git</h4>
-        <div class="nu-name">nugit</div>
-        <div class="cmds">log · status · branch · diff · remote · stash · tag · show</div>
-        <div class="links">
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/git/git.toml">TOML</a>
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/git/git.nu">.nu</a>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="icon">🐍</div>
-        <h4>Python</h4>
-        <div class="nu-name">nupython</div>
-        <div class="cmds">version · eval · module</div>
-        <div class="links">
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/python/python.toml">TOML</a>
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/python/python3.nu">.nu</a>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="icon">🦀</div>
-        <h4>ZeroClaw</h4>
-        <div class="nu-name">nuzero</div>
-        <div class="cmds">status · providers · models · memory · doctor · config</div>
-        <div class="links">
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/zeroclaw/zeroclaw.toml">TOML</a>
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/zeroclaw/zeroclaw.nu">.nu</a>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="icon">📷</div>
-        <h4>OpenFang</h4>
-        <div class="nu-name">nufang</div>
-        <div class="cmds">status · agent · skill · channel · sessions · logs · health</div>
-        <div class="links">
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/openfang/openfang.toml">TOML</a>
-          <a href="https://github.com/barakbl/nulama/blob/main/examples/openfang/openfang.nu">.nu</a>
-        </div>
-      </div>
-    </div>
-
-    <h3>All wrappers — live from list.json</h3>
-    <div id="live-list"><div style="color:var(--muted);font-size:0.85rem;">Loading…</div></div>
   </div>
 </section>
 
@@ -613,9 +613,9 @@ nupip list --outdated | <span class="kw">sort-by</span> version</code></pre>
 <footer>
   <p>Not affiliated with or endorsed by the <a href="https://www.nushell.sh/" target="_blank">Nushell project</a>. Community tool.</p>
   <p style="margin-top:0.4rem;">
-    <a href="https://github.com/barakbl/nulama" target="_blank">GitHub</a>
+    <a href="https://github.com/barakbl/nullama" target="_blank">GitHub</a>
     &nbsp;·&nbsp;
-    <a href="https://github.com/barakbl/nulama/blob/main/LICENSE" target="_blank">License</a>
+    <a href="https://github.com/barakbl/nullama/blob/main/LICENSE" target="_blank">License</a>
   </p>
 </footer>
 

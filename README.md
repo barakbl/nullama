@@ -28,8 +28,8 @@ CLI tool  ──▶  TOML spec  ──▶  Nushell def blocks
 ## 🚀 Quick Start
 
 ```bash
-git clone git@github.com:barakbl/nulama.git
-cd nulama
+git clone git@github.com:barakbl/nullama.git
+cd nullama
 # Slash commands are now available when running Claude Code from this directory
 ```
 
@@ -77,11 +77,11 @@ cp brew.nu ~/.config/nushell/commands/
 
 ```nushell
 # Load a pre-built example straight into your session
-http get https://raw.githubusercontent.com/barakbl/nulama/main/examples/brew/brew.nu | save brew.nu
+http get https://raw.githubusercontent.com/barakbl/nullama/main/wrappers/brew/brew.nu | save brew.nu
 source brew.nu
 
 # Or append it to your config in one go
-http get https://raw.githubusercontent.com/barakbl/nulama/main/examples/brew/brew.nu | save --append $nu.config-path
+http get https://raw.githubusercontent.com/barakbl/nullama/main/wrappers/brew/brew.nu | save --append $nu.config-path
 ```
 
 ---
@@ -241,17 +241,17 @@ nupip freeze | where package =~ "request"
 
 ---
 
-## 📂 Examples
+## 📂 Wrappers
 
 | Tool | TOML Spec | Generated `.nu` | Subcommands |
 |------|-----------|------------------|-------------|
-| 🐳 Docker | [`docker.toml`](examples/docker/docker.toml) | [`docker.nu`](examples/docker/docker.nu) | ps, images, logs, stats, top, events, port, version, info, history, inspect, diff |
-| 🍺 Homebrew | [`brew.toml`](examples/brew/brew.toml) | [`brew.nu`](examples/brew/brew.nu) | list, info, search, outdated, deps, services |
-| 📦 pip | [`pip.toml`](examples/pip/pip.toml) | [`pip.nu`](examples/pip/pip.nu) | list, show, freeze, install, check |
-| 🐍 Python | [`python.toml`](examples/python/python.toml) | [`python.nu`](examples/python/python.nu) | version, eval, module |
-| 🐙 Git | [`git.toml`](examples/git/git.toml) | [`git.nu`](examples/git/git.nu) | log, status, branch, diff, remote, stash, tag, show |
-| 🦀 ZeroClaw | [`zeroclaw.toml`](examples/zeroclaw/zeroclaw.toml) | [`zeroclaw.nu`](examples/zeroclaw/zeroclaw.nu) | status, providers, models list/status, memory list/stats, doctor, config |
-| 📷 OpenFang | [`openfang.toml`](examples/openfang/openfang.toml) | [`openfang.nu`](examples/openfang/openfang.nu) | status, agent list, skill list/search, channel list, models, sessions, logs, health, doctor, config |
+| 🐳 Docker | [`docker.toml`](wrappers/docker/docker.toml) | [`docker.nu`](wrappers/docker/docker.nu) | ps, images, logs, stats, top, events, port, version, info, history, inspect, diff |
+| 🍺 Homebrew | [`brew.toml`](wrappers/brew/brew.toml) | [`brew.nu`](wrappers/brew/brew.nu) | list, info, search, outdated, deps, services |
+| 📦 pip | [`pip.toml`](wrappers/pip/pip.toml) | [`pip.nu`](wrappers/pip/pip.nu) | list, show, freeze, install, check |
+| 🐍 Python | [`python.toml`](wrappers/python/python.toml) | [`python.nu`](wrappers/python/python.nu) | version, eval, module |
+| 🐙 Git | [`git.toml`](wrappers/git/git.toml) | [`git.nu`](wrappers/git/git.nu) | log, status, branch, diff, remote, stash, tag, show |
+| 🦀 ZeroClaw | [`zeroclaw.toml`](wrappers/zeroclaw/zeroclaw.toml) | [`zeroclaw.nu`](wrappers/zeroclaw/zeroclaw.nu) | status, providers, models list/status, memory list/stats, doctor, config |
+| 📷 OpenFang | [`openfang.toml`](wrappers/openfang/openfang.toml) | [`openfang.nu`](wrappers/openfang/openfang.nu) | status, agent list, skill list/search, channel list, models, sessions, logs, health, doctor, config |
 
 ---
 
